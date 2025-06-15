@@ -2426,7 +2426,7 @@ MonoBehaviour:
     list:
     - Key: 0
       Value: Windows Position
-    - Key: 0
+    - Key: 1
       Value: "\u041F\u043E\u0437\u0438\u0446\u0438\u044F \u043E\u043A\u043D\u0430"
 --- !u!1 &4804543528689315118
 GameObject:
