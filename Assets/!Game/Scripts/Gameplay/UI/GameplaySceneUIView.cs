@@ -7,5 +7,7 @@ namespace _Game.Gameplay.UI
     {
         [field: SerializeField] public CameraMover LeftMover { get; private set; }
         [field: SerializeField] public CameraMover RightMover { get; private set; }
+        [field: SerializeField] public CameraMover TopMover { get; private set; }
+        [field: SerializeField] public CameraMover BottomMover { get; private set; }
     }
 }

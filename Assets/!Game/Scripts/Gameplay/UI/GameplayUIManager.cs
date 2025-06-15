@@ -1,4 +1,5 @@
 using _Game.Utils.UI;
+using R3;
 using System;
 using UnityEngine;
 using Zenject;
@@ -13,12 +14,22 @@ namespace _Game.Gameplay.UI
         public void Initialize()
         {
             OpenScreenGameplay();
+
+            WindowOptions.Instance.Position.Skip(1).Subscribe(_ => OpenScreenGameplay());
         }
         #endregion
 
         public void OpenScreenGameplay()
         {
-            var viewModel = new ScreenGameplayViewModel(this);
+            WindowViewModel viewModel = WindowOptions.Instance.Position.Value switch
+            {
+                WindowPosition.Left => new VScreenGameplayViewModel(this),
+                WindowPosition.Right => new VScreenGameplayViewModel(this),
+                WindowPosition.Top => new ScreenGameplayViewModel(this),
+                WindowPosition.Bottom => new ScreenGameplayViewModel(this),
+
+                _ => throw new ArgumentOutOfRangeException()
+            };
             _sceneUI.OpenScreen(viewModel);
         }
 

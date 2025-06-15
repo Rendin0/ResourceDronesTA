@@ -27,10 +27,14 @@ public class CameraController : MonoBehaviour
         WindowOptions.Instance.Position.Subscribe(pos => SetCameraOrientation(pos));
 
         _gameplayUI.LeftMover.OnMouseEnter.Subscribe(_ => { _isMoving = true; _isForward = true; });
+        _gameplayUI.BottomMover.OnMouseEnter.Subscribe(_ => { _isMoving = true; _isForward = true; });
         _gameplayUI.RightMover.OnMouseEnter.Subscribe(_ => { _isMoving = true; _isForward = false; });
+        _gameplayUI.TopMover.OnMouseEnter.Subscribe(_ => { _isMoving = true; _isForward = false; });
 
         _gameplayUI.LeftMover.OnMouseExit.Subscribe(_ => _isMoving = false);
+        _gameplayUI.BottomMover.OnMouseExit.Subscribe(_ => _isMoving = false);
         _gameplayUI.RightMover.OnMouseExit.Subscribe(_ => _isMoving = false);
+        _gameplayUI.TopMover.OnMouseExit.Subscribe(_ => _isMoving = false);
     }
 
     private void SetCameraOrientation(WindowPosition pos)
@@ -52,6 +56,13 @@ public class CameraController : MonoBehaviour
             WindowPosition.Top => 21f,
             _ => 21f
         };
+
+        bool isVertical = pos == WindowPosition.Right || pos == WindowPosition.Left;
+
+        _gameplayUI.LeftMover.gameObject.SetActive(isVertical);
+        _gameplayUI.RightMover.gameObject.SetActive(isVertical);
+        _gameplayUI.TopMover.gameObject.SetActive(!isVertical);
+        _gameplayUI.BottomMover.gameObject.SetActive(!isVertical);
 
         MoveAlongSpline();
     }

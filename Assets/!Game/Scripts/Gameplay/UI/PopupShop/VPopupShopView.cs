@@ -23,6 +23,10 @@ public class VPopupShopView : PopupView<VPopupShopViewModel>
     [SerializeField] private float _drone2Price;
     [SerializeField] private float _drone3Price;
 
+    [SerializeField] private TMP_Text _drone0PriceText;
+    [SerializeField] private TMP_Text _drone1PriceText;
+    [SerializeField] private TMP_Text _drone2PriceText;
+    [SerializeField] private TMP_Text _drone3PriceText;
 
     private DronesManager _dronesManager;
     private CrystalsManager _crystalsManager;
@@ -36,6 +40,12 @@ public class VPopupShopView : PopupView<VPopupShopViewModel>
         _drone1Button.onClick.AddListener(() => BuyDrone(1));
         _drone2Button.onClick.AddListener(() => BuyDrone(2));
         _drone3Button.onClick.AddListener(() => BuyDrone(3));
+
+
+        _drone0PriceText.text = _drone0Price.ToString();
+        _drone1PriceText.text = _drone1Price.ToString();
+        _drone2PriceText.text = _drone2Price.ToString();
+        _drone3PriceText.text = _drone3Price.ToString();
     }
 
     private void OnDisable()
