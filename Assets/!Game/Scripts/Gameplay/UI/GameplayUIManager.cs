@@ -18,8 +18,36 @@ namespace _Game.Gameplay.UI
 
         public void OpenScreenGameplay()
         {
-            var viewModel = new ScreenGameplayViewModel();
+            var viewModel = new ScreenGameplayViewModel(this);
             _sceneUI.OpenScreen(viewModel);
+        }
+
+        internal void OpenPopupSettings()
+        {
+            WindowViewModel viewModel = WindowOptions.Instance.Position.Value switch
+            {
+                WindowPosition.Left => new VPopupSettingsViewModel(),
+                WindowPosition.Right => new VPopupSettingsViewModel(),
+                WindowPosition.Top => new PopupSettingsViewModel(),
+                WindowPosition.Bottom => new PopupSettingsViewModel(),
+
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            _sceneUI.OpenPopup(viewModel);
+        }
+
+        internal void OpenPopupShop()
+        {
+            WindowViewModel viewModel = WindowOptions.Instance.Position.Value switch
+            {
+                WindowPosition.Left => new VPopupShopViewModel(),
+                WindowPosition.Right => new VPopupShopViewModel(),
+                WindowPosition.Top => new PopupShopViewModel(),
+                WindowPosition.Bottom => new PopupShopViewModel(),
+
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            _sceneUI.OpenPopup(viewModel);
         }
     }
 }

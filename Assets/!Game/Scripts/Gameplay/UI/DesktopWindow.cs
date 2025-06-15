@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using System;
 using Zenject;
 using UnityEngine;
+using R3;
 public class DesktopWindow : IInitializable
 {
     const int GWL_STYLE = -16;
@@ -22,7 +23,7 @@ public class DesktopWindow : IInitializable
     [DllImport("user32.dll")]
     static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
-    static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+    static readonly IntPtr HWND_TOPMOST = new(-1);
     const uint SWP_NOZORDER = 0x0004;
     const uint SWP_NOACTIVATE = 0x0010;
 
@@ -42,18 +43,39 @@ public class DesktopWindow : IInitializable
 
         // Убираем рамки и заголовок, устанавливая стиль WS_POPUP
         uint style = GetWindowLong(hwnd, GWL_STYLE);
-        style &= ~WS_CAPTION; 
+        style &= ~WS_CAPTION;
         style &= ~WS_THICKFRAME;
         style |= WS_POPUP | WS_VISIBLE;
         SetWindowLong(hwnd, GWL_STYLE, style);
 
+        WindowOptions.Instance.Position.Subscribe(pos => SetWindowPosition(pos, hwnd));
+    }
+
+    public void SetWindowPosition(WindowPosition position, IntPtr hwnd)
+    {
         // Получаем высоту экрана
         int screenHeight = Screen.currentResolution.height;
         int screenWidth = Screen.currentResolution.width;
 
         int windowHeight = 200; // Высота окна
+        int windowWidth = 200; // Высота окна
 
-        // Устанавливаем позицию и размер окна: ширина 200, высота - полный экран, позиция (0,0)
-        SetWindowPos(hwnd, HWND_TOPMOST, 0, screenHeight - windowHeight, screenWidth, windowHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+        switch (position)
+        {
+            case WindowPosition.Bottom:
+                SetWindowPos(hwnd, HWND_TOPMOST, -1, screenHeight - windowHeight, screenWidth + 1, windowHeight, SWP_NOACTIVATE);
+                break;
+            case WindowPosition.Top:
+                SetWindowPos(hwnd, HWND_TOPMOST, -1, 0, screenWidth + 1, windowHeight, SWP_NOACTIVATE);
+                break;
+            case WindowPosition.Left:
+                SetWindowPos(hwnd, HWND_TOPMOST, -1, 0, windowWidth, screenHeight + 1, SWP_NOACTIVATE);
+                break;
+            case WindowPosition.Right:
+                SetWindowPos(hwnd, HWND_TOPMOST, screenWidth - windowWidth, 0, windowWidth, screenHeight + 1, SWP_NOACTIVATE);
+                break;
+        }
+
+
     }
 }

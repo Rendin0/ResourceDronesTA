@@ -1,3 +1,4 @@
+using R3;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class CrystalsManager : MonoBehaviour
     private readonly List<Crystal> _crystals1 = new();
     private readonly List<Crystal> _crystals2 = new();
     private readonly List<Crystal> _crystals3 = new();
+    public ReactiveProperty<float> Storage { get; set; } = new(100f);
 
     private void Awake()
     {
@@ -55,9 +57,9 @@ public class CrystalsManager : MonoBehaviour
         var crystals = drone.Tier switch
         {
             0 => _crystals0,
-            1 => _crystals1,
-            2 => _crystals2,
-            3 => _crystals3,
+            1 => _crystals1.Concat(_crystals0),
+            2 => _crystals2.Concat(_crystals1).Concat(_crystals0),
+            3 => _crystals3.Concat(_crystals2).Concat(_crystals1).Concat(_crystals0),
             _ => null
         };
 

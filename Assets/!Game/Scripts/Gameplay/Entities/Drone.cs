@@ -1,15 +1,18 @@
 
 using CrashKonijn.Agent.Core;
+using FullOpaqueVFX;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(VFX_SpellManager))]
 public class Drone : MonoBehaviour
 {
     private CrystalsManager _crystalsManager;
     private NavMeshAgent _agent;
+    private VFX_SpellManager _spellManager;
 
     [SerializeField] private Animator _animator;
     [field: SerializeField] public uint Tier { get; private set; }
@@ -17,6 +20,7 @@ public class Drone : MonoBehaviour
     [field: SerializeField, Min(0f)] public float MiningSpeed { get; private set; }
     [field: SerializeField, Min(0f)] public float StorageSize { get; private set; }
 
+    [SerializeField] private float _storage = 0f;
     private Crystal _crystalTarger;
     private bool _isMoving;
 
@@ -25,6 +29,7 @@ public class Drone : MonoBehaviour
 
     private void Awake()
     {
+        _spellManager = GetComponent<VFX_SpellManager>();
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = MoveSpeed;
     }
@@ -32,7 +37,6 @@ public class Drone : MonoBehaviour
     public void Init(CrystalsManager crystalsManager)
     {
         _crystalsManager = crystalsManager;
-        _crystalTarger = _crystalsManager.FindNearestFreeCrystal(this);
         MoveToTarget();
     }
 
@@ -45,7 +49,6 @@ public class Drone : MonoBehaviour
             {
                 if (!_agent.hasPath || _agent.velocity.sqrMagnitude == 0f)
                 {
-                    _isMoving = false;
                     OnDestinationReached();
                 }
             }
@@ -53,18 +56,34 @@ public class Drone : MonoBehaviour
     }
 
     // Метод для задания цели и начала движения
-    public void MoveToTarget()
+    private void MoveToTarget()
     {
         if (_crystalTarger == null)
         {
             StartCoroutine(FindCrystalCoroutine());
             return;
         }
-        Debug.Log($"Moving to target {_crystalTarger.name}");
-        _agent.SetDestination(_crystalTarger.transform.position);
-        _isMoving = true;
+        
+        MoveTo(_crystalTarger.gameObject);
+    }
+
+    private void SetMoving(bool isMoving)
+    {
+        _isMoving = isMoving;
         _animator.SetBool(_animatorWalkHash, _isMoving);
         _animator.SetBool(_animatorIdleHash, !_isMoving);
+    }
+
+    private void MoveTo(GameObject obj)
+    {
+        Debug.Log($"{name}: Moving to target {obj.name}");
+        _agent.SetDestination(obj.transform.position);
+        SetMoving(true);
+    }
+
+    private void MoveToStorage()
+    {
+        MoveTo(_crystalsManager.gameObject);
     }
 
     private IEnumerator FindCrystalCoroutine()
@@ -74,6 +93,7 @@ public class Drone : MonoBehaviour
             _crystalTarger = _crystalsManager.FindNearestFreeCrystal(this);
             if (_crystalTarger != null)
             {
+                _spellManager.target = _crystalTarger.transform;
                 MoveToTarget();
                 yield break;
             }
@@ -84,9 +104,33 @@ public class Drone : MonoBehaviour
     // Метод, который вызывается после достижения цели
     private void OnDestinationReached()
     {
-        _animator.SetBool(_animatorWalkHash, _isMoving);
-        _animator.SetBool(_animatorIdleHash, !_isMoving);
+        SetMoving(false);
 
+        if (_crystalTarger != null)
+            StartCoroutine(MineCrystal());
+        else
+            SendCrystals();
+    }
 
+    private void SendCrystals()
+    {
+        _crystalsManager.Storage.Value += _storage;
+        _storage = 0;
+        MoveToTarget();
+    }
+
+    private IEnumerator MineCrystal()
+    {
+        while (_storage < StorageSize)
+        {
+            StartCoroutine(_spellManager.CastSpell());
+            _storage = Mathf.Clamp(_crystalTarger.ResourcesPerTick + _storage, 0, StorageSize);
+            yield return new WaitForSeconds(MiningSpeed * _crystalTarger.SpeedModifier);
+        }
+
+        _crystalTarger.IsFree = true;
+        _crystalTarger = null;
+        _spellManager.target = null;
+        MoveToStorage();
     }
 }

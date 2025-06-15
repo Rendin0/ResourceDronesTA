@@ -5,17 +5,16 @@ public class DronesManager : MonoBehaviour
 {
     [SerializeField] private CrystalsManager _crystalsManager;
 
-    private readonly List<Drone> _drones = new();
+    public List<Drone> Drones0 { get; } = new();
+    public List<Drone> Drones1 { get; } = new();
+    public List<Drone> Drones2 { get; } = new();
+    public List<Drone> Drones3 { get; } = new();
 
     [SerializeField] private Drone _drone0Prefab;
     [SerializeField] private Drone _drone1Prefab;
     [SerializeField] private Drone _drone2Prefab;
     [SerializeField] private Drone _drone3Prefab;
 
-    private void Start()
-    {
-        CreateDrone(0);
-    }
     public void CreateDrone(uint tier)
     {
         var drone = tier switch
@@ -27,6 +26,24 @@ public class DronesManager : MonoBehaviour
             _ => throw new System.ArgumentOutOfRangeException(nameof(tier), "Invalid drone tier")
         };
         drone.Init(_crystalsManager);
+
+        switch (tier)
+        {
+            case 0:
+                Drones0.Add(drone);
+                break;
+            case 1:
+                Drones1.Add(drone);
+                break;
+            case 2:
+                Drones2.Add(drone);
+                break;
+            case 3:
+                Drones3.Add(drone);
+                break;
+            default:
+                break;
+        }
     }
 
 }
