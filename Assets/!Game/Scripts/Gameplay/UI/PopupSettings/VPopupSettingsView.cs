@@ -1,6 +1,7 @@
 
 using _Game.Utils.UI;
 using R3;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ public class VPopupSettingsView : PopupView<VPopupSettingsViewModel>
     [SerializeField] private Button _topButton;
     [SerializeField] private Button _leftButton;
     [SerializeField] private Button _rightButton;
+
+    [SerializeField] private TMP_Dropdown _languageDropdown;
 
     private void OnEnable()
     {
@@ -30,6 +33,14 @@ public class VPopupSettingsView : PopupView<VPopupSettingsViewModel>
         _topButton.onClick.AddListener(() => ChangeWindowPos(WindowPosition.Top));
         _leftButton.onClick.AddListener(() => ChangeWindowPos(WindowPosition.Left));
         _rightButton.onClick.AddListener(() => ChangeWindowPos(WindowPosition.Right));
+
+        _languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
+    }
+
+    private void OnLanguageChanged(int languageId)
+    {
+        Localisation newLanguage = (Localisation)languageId;
+        LocalisationManager.Instance.CurrentLocalisation.OnNext(newLanguage);
     }
 
     private void ChangeWindowPos(WindowPosition position)

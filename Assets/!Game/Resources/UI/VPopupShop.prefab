@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 309.83997, y: -579.44434}
-  m_SizeDelta: {x: 619.68, y: 570.516}
+  m_AnchoredPosition: {x: 309.83997, y: -533.76135}
+  m_SizeDelta: {x: 619.68, y: 661.881}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1133181847801827346
 CanvasRenderer:
@@ -1248,7 +1248,7 @@ MonoBehaviour:
     list:
     - Key: 0
       Value: Tier 1
-    - Key: 0
+    - Key: 1
       Value: "\u0423\u0440. 1"
 --- !u!1 &3558861956623957215
 GameObject:
@@ -1403,7 +1403,7 @@ MonoBehaviour:
     list:
     - Key: 0
       Value: Tier 3
-    - Key: 0
+    - Key: 1
       Value: "\u0423\u0440. 3"
 --- !u!1 &3686336165173937137
 GameObject:
@@ -1712,7 +1712,7 @@ MonoBehaviour:
     list:
     - Key: 0
       Value: Tier 4
-    - Key: 0
+    - Key: 1
       Value: "\u0423\u0440. 4"
 --- !u!1 &4638120844545057999
 GameObject:
@@ -1867,7 +1867,7 @@ MonoBehaviour:
     list:
     - Key: 0
       Value: Tier 2
-    - Key: 0
+    - Key: 1
       Value: "\u0423\u0440. 2"
 --- !u!1 &4736669568807286161
 GameObject:
