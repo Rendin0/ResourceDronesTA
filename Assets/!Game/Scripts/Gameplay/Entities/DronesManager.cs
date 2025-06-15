@@ -73,6 +73,8 @@ public class DronesManager : MonoBehaviour
         SaveManager.Instance.Data.Drones[2] = Drones2.Count;
         SaveManager.Instance.Data.Drones[3] = Drones3.Count;
 
+        SaveManager.Instance.Data.Localisation = LocalisationManager.Instance.CurrentLocalisation.Value;
+
         SaveManager.Instance.Save();
     }
 

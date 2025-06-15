@@ -46,6 +46,8 @@ public class VPopupShopView : PopupView<VPopupShopViewModel>
         _drone1PriceText.text = _drone1Price.ToString();
         _drone2PriceText.text = _drone2Price.ToString();
         _drone3PriceText.text = _drone3Price.ToString();
+
+        UpdateDronesAmount();
     }
 
     private void OnDisable()

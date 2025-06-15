@@ -19,6 +19,11 @@ public class LocalisationManager
         }
     }
 
-    public ReactiveProperty<Localisation> CurrentLocalisation { get; set; } = new(Localisation.en);
+    private LocalisationManager()
+    {
+        CurrentLocalisation = new(SaveManager.Instance.Data.Localisation);
+    }
+
+    public ReactiveProperty<Localisation> CurrentLocalisation { get; set; }
 
 }

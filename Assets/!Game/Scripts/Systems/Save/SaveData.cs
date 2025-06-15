@@ -12,4 +12,6 @@ public class SaveData
         0, 
         0  
     };
+
+    public Localisation Localisation = Localisation.en;
 }

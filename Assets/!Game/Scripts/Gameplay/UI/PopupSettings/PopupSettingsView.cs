@@ -32,6 +32,8 @@ public class PopupSettingsView : PopupView<PopupSettingsViewModel>
         _topButton.onClick.AddListener(() => ChangeWindowPos(WindowPosition.Top));
         _leftButton.onClick.AddListener(() => ChangeWindowPos(WindowPosition.Left));
         _rightButton.onClick.AddListener(() => ChangeWindowPos(WindowPosition.Right));
+
+        _languageDropdown.value = (int)LocalisationManager.Instance.CurrentLocalisation.Value;
         _languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
     }
 
