@@ -9,10 +9,12 @@ public class CrystalsManager : MonoBehaviour
     private readonly List<Crystal> _crystals1 = new();
     private readonly List<Crystal> _crystals2 = new();
     private readonly List<Crystal> _crystals3 = new();
-    public ReactiveProperty<float> Storage { get; set; } = new(100f);
+    public ReactiveProperty<float> Storage { get; set; } = new();
 
     private void Awake()
     {
+        Storage.Value = SaveManager.Instance.Data.Crystals;
+
         var crystals = GetComponentsInChildren<Crystal>();
         foreach (var crystal in crystals)
         {
@@ -68,5 +70,11 @@ public class CrystalsManager : MonoBehaviour
             crystal.IsFree = false;
 
         return crystal;
+    }
+
+    private void OnDestroy()
+    {
+        SaveManager.Instance.Data.Crystals = Storage.Value;
+        SaveManager.Instance.Save();
     }
 }

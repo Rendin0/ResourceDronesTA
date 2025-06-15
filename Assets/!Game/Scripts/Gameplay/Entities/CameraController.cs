@@ -59,10 +59,10 @@ public class CameraController : MonoBehaviour
 
         bool isVertical = pos == WindowPosition.Right || pos == WindowPosition.Left;
 
-        _gameplayUI.LeftMover.gameObject.SetActive(isVertical);
-        _gameplayUI.RightMover.gameObject.SetActive(isVertical);
-        _gameplayUI.TopMover.gameObject.SetActive(!isVertical);
-        _gameplayUI.BottomMover.gameObject.SetActive(!isVertical);
+        _gameplayUI.LeftMover.gameObject.SetActive(!isVertical);
+        _gameplayUI.RightMover.gameObject.SetActive(!isVertical);
+        _gameplayUI.TopMover.gameObject.SetActive(isVertical);
+        _gameplayUI.BottomMover.gameObject.SetActive(isVertical);
 
         MoveAlongSpline();
     }

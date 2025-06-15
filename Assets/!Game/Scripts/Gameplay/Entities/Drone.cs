@@ -77,7 +77,10 @@ public class Drone : MonoBehaviour
     private void MoveTo(GameObject obj)
     {
         Debug.Log($"{name}: Moving to target {obj.name}");
-        _agent.SetDestination(obj.transform.position);
+        Vector3 pos = obj.transform.position;
+        pos.y = transform.position.y;
+
+        _agent.SetDestination(pos);
         SetMoving(true);
     }
 

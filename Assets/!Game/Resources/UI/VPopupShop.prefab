@@ -2565,7 +2565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _btnClose: {fileID: 8841178509526633669}
-  _btnCloseAlt: {fileID: 0}
+  _btnCloseAlt: {fileID: 5910151334850674561}
   _drone0Button: {fileID: 2943744821231317470}
   _drone1Button: {fileID: 1254617866803172239}
   _drone2Button: {fileID: 8392930631851655834}

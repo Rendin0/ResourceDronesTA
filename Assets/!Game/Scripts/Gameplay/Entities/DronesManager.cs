@@ -15,6 +15,26 @@ public class DronesManager : MonoBehaviour
     [SerializeField] private Drone _drone2Prefab;
     [SerializeField] private Drone _drone3Prefab;
 
+    private void Awake()
+    {
+        for (int i = 0; i < SaveManager.Instance.Data.Drones[0]; i++)
+        {
+            CreateDrone(0);
+        }
+        for (int i = 0; i < SaveManager.Instance.Data.Drones[1]; i++)
+        {
+            CreateDrone(1);
+        }
+        for (int i = 0; i < SaveManager.Instance.Data.Drones[2]; i++)
+        {
+            CreateDrone(2);
+        }
+        for (int i = 0; i < SaveManager.Instance.Data.Drones[3]; i++)
+        {
+            CreateDrone(3);
+        }
+    }
+
     public void CreateDrone(uint tier)
     {
         var drone = tier switch
@@ -44,6 +64,16 @@ public class DronesManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private void OnDestroy()
+    {
+        SaveManager.Instance.Data.Drones[0] = Drones0.Count;
+        SaveManager.Instance.Data.Drones[1] = Drones1.Count;
+        SaveManager.Instance.Data.Drones[2] = Drones2.Count;
+        SaveManager.Instance.Data.Drones[3] = Drones3.Count;
+
+        SaveManager.Instance.Save();
     }
 
 }
