@@ -11,16 +11,32 @@ public class PopupSettingsView : PopupView<PopupSettingsViewModel>
     [SerializeField] private Button _exitButton;
     [SerializeField] private TMP_Dropdown _windowPositionDropdown;
 
+    [SerializeField] private Button _bottomButton;
+    [SerializeField] private Button _topButton;
+    [SerializeField] private Button _leftButton;
+    [SerializeField] private Button _rightButton;
+
     private void OnEnable()
     {
         _exitButton.onClick.AddListener(OnExitButtonClicked);
-        _windowPositionDropdown.OnValueChangedAsObservable().Skip(1).Subscribe(value =>
-            {
-                WindowPosition newPosition = (WindowPosition)value;
-                WindowOptions.Instance.Position.OnNext(newPosition);
-                ViewModel.RequestClose();
-            })
-            .AddTo(this);
+        //_windowPositionDropdown.OnValueChangedAsObservable().Skip(1).Subscribe(value =>
+        //    {
+        //        WindowPosition newPosition = (WindowPosition)value;
+        //        WindowOptions.Instance.Position.OnNext(newPosition);
+        //        ViewModel.RequestClose();
+        //    })
+        //    .AddTo(this);
+
+        _bottomButton.onClick.AddListener(() => ChangeWindowPos(WindowPosition.Bottom));
+        _topButton.onClick.AddListener(() => ChangeWindowPos(WindowPosition.Top));
+        _leftButton.onClick.AddListener(() => ChangeWindowPos(WindowPosition.Left));
+        _rightButton.onClick.AddListener(() => ChangeWindowPos(WindowPosition.Right));
+    }
+
+    private void ChangeWindowPos(WindowPosition position)
+    {
+        WindowOptions.Instance.Position.OnNext(position);
+        ViewModel.RequestClose();
     }
 
     private void OnDisable()
