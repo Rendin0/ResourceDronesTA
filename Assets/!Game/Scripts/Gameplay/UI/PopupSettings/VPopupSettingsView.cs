@@ -18,8 +18,14 @@ public class VPopupSettingsView : PopupView<VPopupSettingsViewModel>
 
     [SerializeField] private TMP_Dropdown _languageDropdown;
 
+    [SerializeField] private Slider _musicVolumeSlider;
+
+    private AudioSource _audioSource;
+
     private void OnEnable()
     {
+        _audioSource = FindAnyObjectByType<AudioSource>();
+
         _exitButton.onClick.AddListener(OnExitButtonClicked);
         //_windowPositionDropdown.OnValueChangedAsObservable().Skip(1).Subscribe(value =>
         //    {
@@ -36,6 +42,13 @@ public class VPopupSettingsView : PopupView<VPopupSettingsViewModel>
 
         _languageDropdown.value = (int)LocalisationManager.Instance.CurrentLocalisation.Value;
         _languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
+
+        _musicVolumeSlider.value = SaveManager.Instance.Data.Volume;
+        _musicVolumeSlider.onValueChanged.AddListener(value =>
+        {
+            _audioSource.volume = value;
+            SaveManager.Instance.Data.Volume = value;
+        });
     }
 
     private void OnLanguageChanged(int languageId)

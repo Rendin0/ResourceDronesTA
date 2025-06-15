@@ -13,5 +13,7 @@ public class SaveData
         0  
     };
 
+    public float Volume = 0.3f;
+
     public Localisation Localisation = Localisation.en;
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,6 +34,17 @@ public class DronesManager : MonoBehaviour
         for (int i = 0; i < SaveManager.Instance.Data.Drones[3]; i++)
         {
             CreateDrone(3);
+        }
+
+        StartCoroutine(SaveCoroutine());
+    }
+
+    private IEnumerator SaveCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(60f);
+            SaveManager.Instance.Save();
         }
     }
 

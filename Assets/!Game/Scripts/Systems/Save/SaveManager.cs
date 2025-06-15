@@ -19,6 +19,8 @@ public class SaveManager
         Data = PlayerPrefs.HasKey("SaveData")
             ? JsonUtility.FromJson<SaveData>(PlayerPrefs.GetString("SaveData"))
             : new SaveData();
+
+        GameObject.FindAnyObjectByType<AudioSource>().volume = Data.Volume;
     }
     
     public void Save()
